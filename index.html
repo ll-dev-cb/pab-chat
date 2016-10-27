@@ -1,0 +1,79 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Chatbot Dialog</title>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { font: 13px Helvetica, Arial; }
+      #chat { background: #fff; padding: 3px; position: fixed; bottom: 0;
+height: 80%; width: 100%;
+              overflow-y: scroll; }
+      #cform { background: #000; padding: 3px; position: fixed; bottom: 0; width: 60%; }
+      #cform input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
+      #cform button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
+      #messages { list-style-type: none; margin: 0; padding: 0; width: 60%}
+      #messages li { padding: 5px 10px; }
+      #messages li:nth-child(odd) { background: #eee; }
+    </style>
+    <script src="speech.js"></script>
+  </head>
+<body>
+
+<form name="textform">
+<table><tr>
+        <td colspan=3>Text To Speech support in your Browser</td>
+        <tr>
+        <tr><td>
+                Test
+        </td>
+        <td>
+                Voice Name
+        </td>
+        <td>
+        </td>
+        </tr>
+        <td>
+                <textarea name"msg">selected Voice</textarea>
+        </td>
+                <td><select name="voiceList">
+                        <script>
+                                list_voices();
+                        </script>
+                </select>
+                <td>
+                <td>
+                        <input type=button name="go" Value="Go"
+onclick="setVoice(this.form);">
+                </td>
+</tr>
+<tr>
+        <td colspan=3>
+                Pitch: <input type=text name=pitch size=3 value=1> Rate: <input type=text name=rate size=3 value=1>Volume:<input type=text size=3 name=volume value=.5>
+        </td>
+</tr>
+</table>
+</form>
+  <div id="chat">
+    <ul id="messages"></ul>
+    <form id="cform" action="">
+      <input id="m" autocomplete="off" /><button>Send</button>
+    </form>
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+    <script>
+    var socket = io();
+      $('form').submit(function(){
+        socket.emit('chat message', $('#m').val());
+        $('#messages').append($('<li>').text($('#m').val()));
+        $('#m').val('');
+        return false;
+      });
+      socket.on('chat message', function(msg){
+        speakText(msg);
+        $('#messages').append($('<li>').text(msg));
+        window.scrollTo(0,document.body.scrollHeight);
+      });
+</script>
+</div>
+  </body>
+</html>
