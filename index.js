@@ -9,7 +9,7 @@ const cp = require('child_process');
 //const jar = cp.spawn('java', ['-cp', ab_dir+'AB.jar', 'Main','bot=super','action=false', 'trace=false'], {cwd:ab_dir, shell:true});
 const jar = cp.spawn(ab_dir+'run.sh',[] , [cwd=ab_dir, shell=true]);
 
-//jar.stdout.on('data', function(data) {
+jar.stdout.on('data', function(data) {
  
    console.log(data.toString());
     data = data.toString().replace('Robot:','');
